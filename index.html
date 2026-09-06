@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dhruv Errla</title>
 <meta name="description" content="M&amp;A research intern at Salt Creek Advisory and software engineering intern at HelmIQ. Boston University Questrom 2029, finance and data science.">
+<meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
@@ -14,160 +15,182 @@
 <body>
 <a class="skip" href="#main">Skip to content</a>
 
-<div class="page">
+<div class="shell">
 
-<header class="masthead">
-  <h1>Dhruv Errla</h1>
+<aside class="rail">
+  <h1 class="rail__name">Dhruv Errla</h1>
   <div class="rule"></div>
-  <p class="tagline">M&amp;A research intern. I build the tools I use.</p>
-  <p class="affil">Boston University, Questrom &rsquo;29 &middot; Finance &middot; Data Science minor &middot; Boston, MA</p>
-  <nav class="nav" aria-label="Sections">
-    <a href="#experience">Experience</a>
-    <a href="#built">Built</a>
-    <a href="#analysis">Analysis</a>
-    <a href="#education">Education</a>
-    <a href="#contact">Contact</a>
-  </nav>
-</header>
+  <p class="rail__tagline">M&amp;A research intern. I build the tools I use.</p>
+  <p class="rail__affil">Boston University, Questrom &rsquo;29<br>
+  Finance &middot; Data Science minor<br>
+  Boston, MA</p>
 
-<main id="main">
+  <nav aria-label="Sections">
+    <p class="rail__label">Contents</p>
+    <ul class="rail__nav">
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#built">Built</a></li>
+      <li><a href="#analysis">Analysis</a></li>
+      <li><a href="#leadership">Leadership</a></li>
+      <li><a href="#education">Education</a></li>
+    </ul>
+  </nav>
+
+  <p class="rail__label">Contact</p>
+  <ul class="rail__contact">
+    <li><a href="mailto:derrla4@bu.edu">derrla4@bu.edu</a></li>
+    <li><a href="https://www.linkedin.com/in/dhruv-errla4">LinkedIn</a></li>
+    <li><a href="https://github.com/derrla4-beep">GitHub</a></li>
+    <li><a href="assets/dhruv-errla-resume.pdf">R&eacute;sum&eacute; (PDF)</a></li>
+  </ul>
+</aside>
+
+<main id="main" class="content">
 
 <section id="experience">
   <p class="label">Experience</p>
 
   <article class="entry">
-    <div class="entry__head">
+    <p class="entry__date">Jul 2026 &ndash; present</p>
+    <div class="entry__main">
       <h2 class="entry__org">Salt Creek Advisory</h2>
-      <span class="entry__date">Jul 2026 &ndash; present</span>
-    </div>
-    <p class="entry__role">M&amp;A Research &amp; Outreach Intern &middot; Chicago, IL (remote)</p>
-    <div class="entry__body">
-      <p>Sell-side origination for a lower-middle-market M&amp;A firm, sourcing acquisition
-      targets in water and wastewater infrastructure. I have screened
-      <strong>396 companies across 11 batches</strong> &mdash; verifying ownership structure,
-      applying the mandate&rsquo;s hard exclusions, and surfacing the owner or principal an
-      associate can actually call.</p>
-      <p>The sector is unusually easy to get wrong. Municipal utility districts, water
-      authorities and sanitation districts look like operating companies in a list and are
-      the single largest source of false positives; engineering consultancies are the most
-      likely to be quietly employee-owned or already rolled up. I also built preliminary
-      valuation and market analyses to support screening.</p>
-      <p><a href="salt-creek.html">How the research pipeline works &rarr;</a></p>
+      <p class="entry__role">M&amp;A Research &amp; Outreach Intern &middot; Chicago, IL (remote)</p>
+      <div class="entry__body">
+        <p>Sell-side origination for a lower-middle-market M&amp;A firm, sourcing acquisition
+        targets in water and wastewater infrastructure. I have screened
+        <strong>396 companies across 11 batches</strong> &mdash; verifying ownership structure,
+        applying the mandate&rsquo;s hard exclusions, and surfacing the owner or principal an
+        associate can actually call.</p>
+        <p>The sector is unusually easy to get wrong. Municipal utility districts, water
+        authorities and sanitation districts look like operating companies in a list and are
+        the single largest source of false positives; engineering consultancies are the most
+        likely to be quietly employee-owned or already rolled up. I also built preliminary
+        valuation and market analyses to support screening.</p>
+        <p><a href="salt-creek.html">How the research pipeline works &rarr;</a></p>
+      </div>
     </div>
   </article>
 
   <article class="entry">
-    <div class="entry__head">
+    <p class="entry__date">Aug 2026 &ndash; present</p>
+    <div class="entry__main">
       <h2 class="entry__org">HelmIQ</h2>
-      <span class="entry__date">Aug 2026 &ndash; present</span>
-    </div>
-    <p class="entry__role">Software Engineering Intern</p>
-    <div class="entry__body">
-      <p>HelmIQ builds an AI-native CRM for private equity and investment banking firms.
-      Salt Creek is its first customer, which is how I ended up on both sides of the same
-      product &mdash; using it as an analyst and fixing it as an engineer.</p>
-      <p>I work in a production <strong>Next.js, Prisma and PostgreSQL</strong> codebase.
-      My first assignment was a defect I traced end to end &mdash; from React component state,
-      through the API route and its validation, down to the Prisma column that was supposed
-      to receive the value. I took a baseline before changing anything so a later failure
-      could be attributed, matched the pattern already sitting next to my change rather than
-      inventing one, and checked whether the same bug existed in sibling components before
-      calling it fixed. It did, in a component whose backend was not ready, so I wrote that
-      up as someone else&rsquo;s task instead of expanding my own.</p>
-      <p>The branch rebased over 35 upstream commits, all checks came back green, and it
-      shipped as <strong>PR&nbsp;#1634</strong>. The description says plainly which
-      verification had not happened yet, because stating what is unverified is part of the
-      deliverable rather than something to bury.</p>
+      <p class="entry__role">Software Engineering Intern</p>
+      <div class="entry__body">
+        <p>HelmIQ builds an AI-native CRM for private equity and investment banking firms.
+        Salt Creek is its first customer, which is how I ended up on both sides of the same
+        product &mdash; using it as an analyst and fixing it as an engineer.</p>
+        <p>I work in a production <strong>Next.js, Prisma and PostgreSQL</strong> codebase.
+        My first assignment was a defect I traced end to end &mdash; from React component state,
+        through the API route and its validation, down to the Prisma column that was supposed
+        to receive the value. I took a baseline before changing anything so a later failure
+        could be attributed, matched the pattern already sitting next to my change rather than
+        inventing one, and checked whether the same bug existed in sibling components before
+        calling it fixed. It did, in a component whose backend was not ready, so I wrote that
+        up as someone else&rsquo;s task instead of expanding my own.</p>
+        <p>The branch rebased over 35 upstream commits, all checks came back green, and it
+        shipped as <strong>PR&nbsp;#1634</strong>. The description says plainly which
+        verification had not happened yet, because stating what is unverified is part of the
+        deliverable rather than something to bury.</p>
+      </div>
     </div>
   </article>
 
   <article class="entry">
-    <div class="entry__head">
+    <p class="entry__date">Oct 2025 &ndash; present</p>
+    <div class="entry__main">
       <h2 class="entry__org">The Drop Refurbishment</h2>
-      <span class="entry__date">Oct 2025 &ndash; present</span>
-    </div>
-    <p class="entry__role">Founder &middot; Montgomery, NJ</p>
-    <div class="entry__body">
-      <p>Climbing gyms retire holds and volumes long before they are actually worn out.
-      I started The Drop at 18 with no prior experience to refurbish and recirculate them
-      instead. <strong>27 holds and volumes across 5 local businesses in two months.</strong></p>
-      <p>The interesting part was not the refurbishing. It was writing the contract terms,
-      agreeing scope with owners who had no reason to trust an eighteen-year-old, and
-      getting invoices out and paid.</p>
+      <p class="entry__role">Founder &middot; Montgomery, NJ</p>
+      <div class="entry__body">
+        <p>Climbing gyms retire holds and volumes long before they are actually worn out.
+        I started The Drop at 18 with no prior experience to refurbish and recirculate them
+        instead. <strong>27 holds and volumes across 5 local businesses in two months.</strong></p>
+        <p>The interesting part was not the refurbishing. It was writing the contract terms,
+        agreeing scope with owners who had no reason to trust an eighteen-year-old, and
+        getting invoices out and paid.</p>
+      </div>
     </div>
   </article>
 </section>
 
 <section id="built">
   <p class="label">Built</p>
-  <p class="lede">Three systems I designed, wrote and operate. Each page below is the
-  argument for the decisions in it &mdash; including what they cost and where they fall
-  short.</p>
+  <p class="lede" style="margin-bottom:2.5rem">Three systems I designed, wrote and operate.
+  Each page below is the argument for the decisions in it &mdash; including what they cost
+  and where they fall short.</p>
 
-  <article class="project" style="margin-top:2rem">
-    <h3 class="project__title"><a href="outreach-engine.html">outreach-engine</a></h3>
-    <p class="project__thesis">Researched cold outreach that refuses to send a claim it
-    cannot support. Most of the engineering is the refusal: a rigid output format, a tiered
-    rule for what counts as a real research hook, a deterministic validator that rejects
-    filler, and a follow-up state machine built to give up rather than nag.</p>
-    <p class="project__meta">
-      <span class="stack">Python &middot; Claude API &middot; Gmail API &middot; Playwright &middot; Flask</span>
-      <a href="https://github.com/derrla4-beep/outreach-engine">Source</a>
-      <a href="outreach-engine.html">Deep dive</a>
-    </p>
-  </article>
+  <div class="projects">
+    <article class="project">
+      <h3 class="project__title"><a href="outreach-engine.html">outreach-engine</a></h3>
+      <p class="project__thesis">Researched cold outreach that refuses to send a claim it
+      cannot support. Most of the engineering is the refusal: a rigid output format, a tiered
+      rule for what counts as a real research hook, a deterministic validator that rejects
+      filler, and a follow-up state machine built to give up rather than nag.</p>
+      <p class="project__meta">
+        <span class="stack">Python &middot; Claude API &middot; Gmail API &middot; Playwright &middot; Flask</span>
+      </p>
+      <p class="project__meta" style="margin-top:.5rem">
+        <a href="outreach-engine.html">Deep dive</a>
+        <a href="https://github.com/derrla4-beep/outreach-engine">Source</a>
+      </p>
+    </article>
 
-  <article class="project">
-    <h3 class="project__title"><a href="banktracker.html">BankTracker</a></h3>
-    <p class="project__thesis">Banks post on a predictable annual rhythm, so the open date
-    is forecastable &mdash; and the point of forecasting it is to have the networking already
-    done before the posting goes live. 75 firms, 115 programs, three recruiting tracks,
-    driven by a scheduled agent over plain JSON with a schema validator in front of it.</p>
-    <p class="project__meta">
-      <span class="stack">Python &middot; JSON state &middot; Google Calendar &middot; scheduled agent</span>
-      <a href="https://github.com/derrla4-beep/BankTracker">Source</a>
-      <a href="banktracker.html">Deep dive</a>
-    </p>
-  </article>
+    <article class="project">
+      <h3 class="project__title"><a href="banktracker.html">BankTracker</a></h3>
+      <p class="project__thesis">Banks post on a predictable annual rhythm, so the open date
+      is forecastable &mdash; and the point of forecasting it is to have the networking already
+      done before the posting goes live. 75 firms, 115 programs, three recruiting tracks,
+      driven by a scheduled agent over plain JSON with a schema validator in front of it.</p>
+      <p class="project__meta">
+        <span class="stack">Python &middot; JSON state &middot; Google Calendar &middot; scheduled agent</span>
+      </p>
+      <p class="project__meta" style="margin-top:.5rem">
+        <a href="banktracker.html">Deep dive</a>
+        <a href="https://github.com/derrla4-beep/BankTracker">Source</a>
+      </p>
+    </article>
 
-  <article class="project">
-    <h3 class="project__title"><a href="salt-creek.html">Batch research pipeline</a></h3>
-    <p class="project__thesis">The system behind the 396 companies. Research fans out
-    across parallel agents on a fixed per-company budget, every claim carries a source URL
-    that actually proves it, and anything unproven is written as <em>Not Found</em> plus the
-    manual check still owed &mdash; never guessed.</p>
-    <p class="project__meta">
-      <span class="stack">Python &middot; Claude Code &middot; openpyxl &middot; schema validation</span>
-      <span>Client work &mdash; no public repo</span>
-      <a href="salt-creek.html">Deep dive</a>
-    </p>
-  </article>
+    <article class="project">
+      <h3 class="project__title"><a href="salt-creek.html">Batch research pipeline</a></h3>
+      <p class="project__thesis">The system behind the 396 companies. Research fans out
+      across parallel agents on a fixed per-company budget, every claim carries a source URL
+      that actually proves it, and anything unproven is written as <em>Not Found</em> plus the
+      manual check still owed &mdash; never guessed.</p>
+      <p class="project__meta">
+        <span class="stack">Python &middot; Claude Code &middot; openpyxl &middot; schema validation</span>
+      </p>
+      <p class="project__meta" style="margin-top:.5rem">
+        <a href="salt-creek.html">Deep dive</a>
+        <span>Client work &mdash; no public repo</span>
+      </p>
+    </article>
+  </div>
 </section>
 
 <section id="analysis">
   <p class="label">Analysis</p>
 
   <article class="entry">
-    <div class="entry__head">
+    <p class="entry__date">2026</p>
+    <div class="entry__main">
       <h2 class="entry__org">AvePoint</h2>
-      <span class="entry__date">2026</span>
-    </div>
-    <p class="entry__role">BU Alternative Investment Group, Pitch Team Analyst &middot; 2nd place</p>
-    <div class="entry__body">
-      <p>AvePoint sells data management, migration and governance tooling for Microsoft 365.
-      The pitch turned on whether that is a real moat or a rented one: the company&rsquo;s
-      position is built on top of a platform owned by a much larger company that could, in
-      principle, ship the same functionality natively.</p>
-      <p>So the diligence I ran was aimed at that question &mdash; AvePoint&rsquo;s position
-      in the Microsoft 365 ecosystem and how durable that position is against the competitive
-      set.</p>
-      <p>I then built an <strong>LBO model</strong> projecting revenue growth, EBITDA margin
-      expansion and cash burn through the hold period, and stress-tested the assumptions
-      across multiple scenarios rather than presenting a single base case &mdash; because for
-      a business like this the honest output is a range and the conditions that move you
-      through it, not a point estimate. We presented the thesis and valuation to an investor
-      panel and <strong>placed 2nd</strong>.</p>
-      <p class="note">The model itself is not posted here. Happy to walk through it.</p>
+      <p class="entry__role">BU Alternative Investment Group, Pitch Team Analyst &middot; 2nd place</p>
+      <div class="entry__body">
+        <p>AvePoint sells data management, migration and governance tooling for Microsoft 365.
+        The pitch turned on whether that is a real moat or a rented one: the company&rsquo;s
+        position is built on top of a platform owned by a much larger company that could, in
+        principle, ship the same functionality natively.</p>
+        <p>So the diligence I ran was aimed at that question &mdash; AvePoint&rsquo;s position
+        in the Microsoft 365 ecosystem and how durable that position is against the competitive
+        set.</p>
+        <p>I then built an <strong>LBO model</strong> projecting revenue growth, EBITDA margin
+        expansion and cash burn through the hold period, and stress-tested the assumptions
+        across multiple scenarios rather than presenting a single base case &mdash; because for
+        a business like this the honest output is a range and the conditions that move you
+        through it, not a point estimate. We presented the thesis and valuation to an investor
+        panel and <strong>placed 2nd</strong>.</p>
+        <p class="note">The model itself is not posted here. Happy to walk through it.</p>
+      </div>
     </div>
   </article>
 </section>
@@ -176,27 +199,27 @@
   <p class="label">Leadership</p>
 
   <article class="entry">
-    <div class="entry__head">
+    <p class="entry__date">Jan 2026 &ndash; present</p>
+    <div class="entry__main">
       <h2 class="entry__org">BU CGS Student Government</h2>
-      <span class="entry__date">Jan 2026 &ndash; present</span>
-    </div>
-    <p class="entry__role">Treasurer</p>
-    <div class="entry__body">
-      <p>I own a <strong>$10,000 annual budget</strong> across 3&ndash;5 student events &mdash;
-      allocating it, tracking spend against it, and keeping every event inside it. I also
-      ran fundraising that brought in <strong>$2,000+</strong> of additional programming
-      money on top of the allocation.</p>
+      <p class="entry__role">Treasurer</p>
+      <div class="entry__body">
+        <p>I own a <strong>$10,000 annual budget</strong> across 3&ndash;5 student events &mdash;
+        allocating it, tracking spend against it, and keeping every event inside it. I also
+        ran fundraising that brought in <strong>$2,000+</strong> of additional programming
+        money on top of the allocation.</p>
+      </div>
     </div>
   </article>
 
   <article class="entry">
-    <div class="entry__head">
+    <p class="entry__date">Jan 2026 &ndash; present</p>
+    <div class="entry__main">
       <h2 class="entry__org">BU Alternative Investment Group</h2>
-      <span class="entry__date">Jan 2026 &ndash; present</span>
-    </div>
-    <p class="entry__role">Pitch Team Analyst</p>
-    <div class="entry__body">
-      <p>Diligence, modeling and presenting to investor panels. See the AvePoint pitch above.</p>
+      <p class="entry__role">Pitch Team Analyst</p>
+      <div class="entry__body">
+        <p>Diligence, modeling and presenting to investor panels. See the AvePoint pitch above.</p>
+      </div>
     </div>
   </article>
 </section>
@@ -205,21 +228,21 @@
   <p class="label">Education</p>
 
   <article class="entry">
-    <div class="entry__head">
+    <p class="entry__date">Expected May 2029</p>
+    <div class="entry__main">
       <h2 class="entry__org">Boston University</h2>
-      <span class="entry__date">Expected May 2029</span>
-    </div>
-    <p class="entry__role">College of General Studies &rarr; Questrom School of Business</p>
-    <div class="entry__body">
-      <p>BS in Business Administration. Intended concentration in <strong>Finance</strong>
-      with an intended minor in <strong>Data Science</strong>. <strong>GPA 3.86.</strong></p>
-      <p>2nd place, BU Alternative Investment Group case competition. National Honor Society.</p>
+      <p class="entry__role">College of General Studies &rarr; Questrom School of Business</p>
+      <div class="entry__body">
+        <p>BS in Business Administration. Intended concentration in <strong>Finance</strong>
+        with an intended minor in <strong>Data Science</strong>. <strong>GPA 3.86.</strong></p>
+        <p>2nd place, BU Alternative Investment Group case competition. National Honor Society.</p>
+      </div>
     </div>
   </article>
 
   <div class="scroll">
   <table>
-    <caption class="label" style="text-align:left;margin-bottom:.9rem">Tools</caption>
+    <caption class="label">Tools</caption>
     <tbody>
       <tr><th scope="row">Finance</th><td>LBO and valuation modeling, comparable company analysis, diligence, Excel</td></tr>
       <tr><th scope="row">Engineering</th><td>Python, TypeScript, Next.js, Prisma, PostgreSQL, Flask, Git</td></tr>
@@ -230,25 +253,18 @@
 </section>
 
 <section id="contact">
-  <p class="label">Contact</p>
-  <p class="lede" style="margin-bottom:1.75rem">I read everything and I reply. If you work in
-  banking or private equity and something above is worth arguing about, that is a good
-  reason to email me.</p>
-  <ul class="contact-list">
-    <li><a href="mailto:derrla4@bu.edu">derrla4@bu.edu</a></li>
-    <li><a href="https://www.linkedin.com/in/dhruv-errla4">linkedin.com/in/dhruv-errla4</a></li>
-    <li><a href="https://github.com/derrla4-beep">github.com/derrla4-beep</a></li>
-    <li><a href="assets/dhruv-errla-resume.pdf">R&eacute;sum&eacute; (PDF)</a></li>
-  </ul>
+  <p class="label">Get in touch</p>
+  <p class="lede">I read everything and I reply. If you work in banking or private equity and
+  something above is worth arguing about, that is a good reason to
+  <a href="mailto:derrla4@bu.edu">email me</a>.</p>
 </section>
-
-</main>
 
 <footer class="colophon">
   <p>Hand-written HTML and CSS. No framework, no analytics, no cookies.
   <a href="https://github.com/derrla4-beep/personal-site">Source</a>.</p>
 </footer>
 
+</main>
 </div>
 </body>
 </html>

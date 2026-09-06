@@ -1,6 +1,6 @@
 # personal-site
 
-The source for [dhruverrla.me](https://dhruverrla.me).
+The source for <https://derrla4-beep.github.io/personal-site/>.
 
 Hand-written HTML and CSS. No framework, no build step, no dependencies. What is in this
 repository is exactly what ships — GitHub Pages serves these files as they sit.
@@ -48,14 +48,16 @@ Push to `main`. GitHub Pages redeploys automatically; it usually takes under a m
 - Never link the private `Banking-Outreach` repository. `outreach-engine` is its sanitized
   public twin and is the one to show.
 
-## Turning on the custom domain
+## Why there is no robots.txt
 
-The site is live at <https://derrla4-beep.github.io/personal-site/> until `dhruverrla.me`
-is registered and its DNS points at GitHub. Once it does, run:
+The pages carry `<meta name="robots" content="noindex, nofollow">`, which is what keeps the
+site out of search results while leaving the link fully open to anyone it is sent to.
 
-```bash
-mv CNAME.pending CNAME && git add CNAME && git commit -m "chore: point at dhruverrla.me" && git push
-```
+A `robots.txt` is deliberately absent, not forgotten: crawlers only read one at a domain
+root, so `/personal-site/robots.txt` would be ignored. `noindex` is the stronger tool
+regardless — `Disallow` only prevents crawling, and a disallowed page can still appear in
+results on the strength of inbound links.
 
-Then in Settings → Pages, set the custom domain to `dhruverrla.me` and tick **Enforce HTTPS**
-once the certificate provisions.
+`nofollow` is there for the résumé PDF. A PDF cannot carry a meta tag, and excluding one
+needs an `X-Robots-Tag` header that GitHub Pages will not let us set, so the only remaining
+lever is to stop crawlers following the link to it.
