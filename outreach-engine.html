@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>outreach-engine &mdash; Dhruv Errla</title>
+<meta name="description" content="A cold-outreach pipeline built around refusal: tiered research hooks, deterministic validation, timezone-aware scheduling, and a follow-up state machine designed to give up.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' font-family='Georgia,serif'>D</text></svg>">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="page page--wide">
+
+<header class="masthead" style="padding-bottom:1rem">
+  <a class="backlink" href="index.html">&larr; Dhruv Errla</a>
+  <h1 style="font-size:clamp(2rem,5.5vw,2.9rem)">outreach-engine</h1>
+  <div class="rule"></div>
+  <p class="lede" style="max-width:34ch">Researched cold outreach that refuses to send a
+  claim it cannot support.</p>
+  <p class="project__meta" style="margin-top:1.5rem">
+    <span class="stack">Python &middot; Claude API &middot; Gmail API &middot; Playwright &middot; Flask</span>
+    <a href="https://github.com/derrla4-beep/outreach-engine">github.com/derrla4-beep/outreach-engine</a>
+  </p>
+</header>
+
+<main id="main" class="article">
+
+<h2>The problem</h2>
+
+<p>Mass-templated outreach gets ignored, and writing genuinely specific emails one at a
+time does not scale past about ten people. The interesting constraint is that
+<em>personalization is the whole point</em> &mdash; so the system cannot simply generate
+more text faster. It has to force each message to be anchored to a real, verifiable fact
+about one person, and refuse to send anything that degrades into &ldquo;I came across your
+profile.&rdquo;</p>
+
+<p>Most of the engineering here is that refusal: a rigid output format, a tiered rule for
+what counts as a real research hook, a validator that rejects filler, and a follow-up state
+machine that stops rather than nags.</p>
+
+<h2>Architecture</h2>
+
+<figure class="diagram">
+<div class="scroll">
+<svg viewBox="0 0 720 552" role="img" aria-labelledby="diagtitle diagdesc">
+  <title id="diagtitle">outreach-engine pipeline</title>
+  <desc id="diagdesc">Input feeds ingestion, then generation, then delivery. Sent threads
+  feed a follow-up state machine, which queues the next touch back into the scheduler.
+  Three JSON files hold state.</desc>
+  <defs>
+    <marker id="ah" viewBox="0 0 8 8" refX="7.5" refY="4"
+            markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L8,4 L0,8 z" class="d-head"/>
+    </marker>
+  </defs>
+
+  <!-- lane labels -->
+  <text class="d-lane-label" x="78" y="42"  text-anchor="end">INPUT</text>
+  <text class="d-lane-label" x="78" y="118" text-anchor="end">INGEST</text>
+  <text class="d-lane-label" x="78" y="194" text-anchor="end">GENERATE</text>
+  <text class="d-lane-label" x="78" y="346" text-anchor="end">DELIVER</text>
+  <text class="d-lane-label" x="78" y="498" text-anchor="end">LOOP</text>
+
+  <!-- main column -->
+  <rect class="d-box" x="88" y="16"  width="250" height="46" rx="2"/>
+  <text class="d-title" x="102" y="38">urls.txt &middot; data/profiles.csv</text>
+  <text class="d-sub"   x="102" y="53">a URL plus a hand-written angle</text>
+
+  <rect class="d-box" x="88" y="92"  width="250" height="46" rx="2"/>
+  <text class="d-title" x="102" y="114">linkedin_scraper.py</text>
+  <text class="d-sub"   x="102" y="129">CSV &rarr; Playwright &rarr; requests</text>
+
+  <rect class="d-box" x="88" y="168" width="250" height="46" rx="2"/>
+  <text class="d-title" x="102" y="190">email_generator.py</text>
+  <text class="d-sub"   x="102" y="205">3-line format &middot; tiered hooks</text>
+
+  <rect class="d-box" x="88" y="244" width="250" height="46" rx="2"/>
+  <text class="d-title" x="102" y="266">validator + text_utils.py</text>
+  <text class="d-sub"   x="102" y="281">word caps &middot; single-ask &middot; cleanup</text>
+
+  <rect class="d-box" x="88" y="320" width="250" height="46" rx="2"/>
+  <text class="d-title" x="102" y="342">schedule_sender.py</text>
+  <text class="d-sub"   x="102" y="357">Tue/Wed/Thu, recipient-local AM</text>
+
+  <rect class="d-box" x="88" y="396" width="250" height="46" rx="2"/>
+  <text class="d-title" x="102" y="418">gmail_sender.py</text>
+  <text class="d-sub"   x="102" y="433">draft or send</text>
+
+  <rect class="d-box" x="88" y="472" width="250" height="46" rx="2"/>
+  <text class="d-title" x="102" y="494">followup_system.py</text>
+  <text class="d-sub"   x="102" y="509">thread scan &rarr; state machine</text>
+
+  <!-- main column arrows -->
+  <path class="d-line" d="M213,62  V88"  marker-end="url(#ah)"/>
+  <path class="d-line" d="M213,138 V164" marker-end="url(#ah)"/>
+  <path class="d-line" d="M213,214 V240" marker-end="url(#ah)"/>
+  <path class="d-line" d="M213,290 V316" marker-end="url(#ah)"/>
+  <path class="d-line" d="M213,366 V392" marker-end="url(#ah)"/>
+  <path class="d-line--soft" d="M213,442 V468" marker-end="url(#ah)"/>
+
+  <!-- side inputs into generation -->
+  <rect class="d-box" x="404" y="16"  width="204" height="46" rx="2"/>
+  <text class="d-title" x="418" y="38">data/profile.json</text>
+  <text class="d-sub"   x="418" y="53">sender identity &middot; hooks</text>
+
+  <rect class="d-box" x="404" y="92"  width="204" height="46" rx="2"/>
+  <text class="d-title" x="418" y="114">email_analyzer.py</text>
+  <text class="d-sub"   x="418" y="129">your real sent mail &rarr; tone</text>
+
+  <path class="d-line" d="M404,39 H372"/>
+  <path class="d-line" d="M404,115 H372"/>
+  <path class="d-line" d="M372,39 V191 H341" marker-end="url(#ah)"/>
+
+  <!-- state stores -->
+  <rect class="d-store" x="404" y="322" width="204" height="42" rx="2"/>
+  <text class="d-store-label" x="418" y="348">data/scheduled_queue.json</text>
+
+  <rect class="d-store" x="404" y="398" width="204" height="42" rx="2"/>
+  <text class="d-store-label" x="418" y="424">data/contacts.json</text>
+
+  <rect class="d-store" x="404" y="474" width="204" height="42" rx="2"/>
+  <text class="d-store-label" x="418" y="500">data/followup_state.json</text>
+
+  <path class="d-line" d="M338,343 H400" marker-end="url(#ah)"/>
+  <path class="d-line" d="M338,419 H400" marker-end="url(#ah)"/>
+  <path class="d-line" d="M338,495 H400" marker-end="url(#ah)"/>
+
+  <!-- feedback: follow-up re-queues into the scheduler -->
+  <path class="d-line--soft" d="M608,495 H648 V343 H612" marker-end="url(#ah)"/>
+  <text class="d-sub" x="688" y="419" transform="rotate(-90 688 419)"
+        text-anchor="middle">next touch re-queued</text>
+</svg>
+</div>
+<figcaption>Generation is one stage of six. The three stores are the system&rsquo;s memory:
+what is queued, who has been contacted, and what has already been done about each thread.
+Keeping the last one separate from Gmail is what makes a re-scan idempotent.</figcaption>
+</figure>
+
+<h2>Four decisions I would defend</h2>
+
+<div class="decision">
+<h3>1. Nothing sends when it is written. It sends when the recipient will read it.</h3>
+<p>Messages queue and release on the next Tuesday, Wednesday or Thursday between 8:30 and
+9:59 AM <strong>in the recipient&rsquo;s local timezone</strong>. Monday morning competes
+with the weekend backlog and Friday afternoon gets read and forgotten, so both are excluded
+deliberately. The minute inside the window is randomized, because a queue that fires every
+message at exactly 9:00:00 has an obvious machine signature and recipients who compare notes
+notice.</p>
+<p class="cost"><strong>What it costs:</strong> latency. A message written on Friday night
+sits for four days. That is the right trade when the reply rate on a cold email is a couple
+of percent and arrival time is one of the few levers that does not require better writing.
+The timezone itself is inferred from a free-text location string and falls back to US
+Eastern, which silently mis-times mail to anyone whose location is written unusually.</p>
+</div>
+
+<div class="decision">
+<h3>2. The follow-up machine is built to give up.</h3>
+<p>Two cases, deliberately asymmetric. <strong>No reply at all:</strong> up to two
+follow-ups, then it stops permanently. <strong>They replied, you replied, they went
+quiet:</strong> exactly one follow-up, ever, never escalated to a second.</p>
+<p>The asymmetry is the entire point. Silence after a first cold email carries no
+information &mdash; they may not have seen it. Silence after a real exchange usually means
+&ldquo;not now,&rdquo; and a second nudge there converts a neutral contact into an annoyed
+one. There is also a staleness floor: past three weeks a follow-up reads as strange rather
+than persistent, so those threads are dropped instead of revived.</p>
+<p class="cost"><strong>What it costs:</strong> conversions I will never see. Some of those
+dropped threads would have replied to a third touch. I would rather lose those than be the
+person whose name in an inbox means another email is coming.</p>
+</div>
+
+<div class="decision">
+<h3>3. Validation is deterministic, not another model call.</h3>
+<p>Two things run after generation and neither is an LLM. The validator enforces the
+numeric and structural constraints a model does not reliably self-police from prose &mdash;
+a 100-word cap on the body, 35 words per line, and a single-ask check on the closing line
+that rejects both multiple question marks and two questions joined by &ldquo;and.&rdquo;
+Then a deterministic pass normalizes punctuation: em dashes become commas, arrows become
+words, and numeric grouping like <code>1,000</code> is protected from the comma
+normalizer.</p>
+<p>Both could have been &ldquo;ask the model to check its work.&rdquo; Neither is, for the
+same reason: the failures being caught are exactly the failures a model is prone to, so
+asking the same class of system to catch them is unreliable and costs another round trip.
+A regex that removes every em dash removes every em dash.</p>
+<p class="cost"><strong>The same instinct, one layer up:</strong> the generator parses model
+output by brace-matching every top-level JSON span and taking the last valid one, rather
+than the first <code>{</code>. When a model second-guesses itself and emits a draft, some
+commentary, then a corrected blob, naive parsing picks the wrong one.</p>
+</div>
+
+<div class="decision">
+<h3>4. Identity is configuration, not source.</h3>
+<p>No <code>.py</code> file in the repository names me. The sender&rsquo;s name, email,
+school, differentiators and credibility hooks all load from a config file. This started as
+a privacy requirement and turned out to be the right factoring anyway &mdash; the prompt
+builder is now reusable by anyone, and nothing in the pipeline is actually finance-specific.
+The voice, the hooks and the sender identity are all data.</p>
+</div>
+
+<h2>The data question</h2>
+
+<p>This tool operates on a list of real people who never agreed to appear in a public
+repository: their names, employers, profiles, work email addresses, and private notes about
+how to approach them. That data is genuinely useful to the tool and genuinely inappropriate
+to publish. That constraint, not aesthetics, is what shaped the repository layout.</p>
+
+<div class="scroll">
+<table>
+  <thead><tr><th scope="col">Rule</th><th scope="col">How it is enforced</th></tr></thead>
+  <tbody>
+    <tr><td>Real data never enters version control</td><td>Contacts, queue, reply state, processed URLs, tone samples and every PDF, DOCX and XLSX are gitignored</td></tr>
+    <tr><td>Every committed data file is synthetic</td><td>Invented people at invented firms on <code>example.com</code> domains</td></tr>
+    <tr><td>Reads fall back, writes do not</td><td>A read returns the real file if it exists and the committed example otherwise, so a fresh clone runs end to end. Writes always target the real filename, so example data is never mutated into a mixture of fake and real records.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>The failure mode being designed against is the ordinary one: someone clones the repo,
+runs it, and accidentally commits their contact list. Making the ignored path the
+<em>default</em> path is what prevents that, rather than a warning in a README.</p>
+
+<h2>What it does not do</h2>
+
+<p>These are real limitations, listed because a system described only by its strengths has
+not been examined.</p>
+
+<ul>
+  <li><strong>No reply ground truth.</strong> Status tracking records what was <em>sent</em>,
+  not what actually got a response &mdash; so the system cannot learn which hooks work. The
+  prompt encodes cold-outreach best practice, not measured results from this pipeline.
+  Closing that loop is the single highest-value next change.</li>
+  <li><strong>Timezone inference is a keyword heuristic.</strong> It reads a free-text
+  location string and will be wrong for anyone who lists a headquarters rather than where
+  they sit.</li>
+  <li><strong>The review UI has no auth.</strong> It binds to localhost and assumes a single
+  trusted operator. It should not be exposed to a network as written.</li>
+  <li><strong>Scraping is the fragile tier and is treated as such.</strong> CSV is the
+  default path because it always works; the browser-driven path breaks whenever the site
+  changes markup or decides the session looks automated. A pipeline whose first step is the
+  fragile one fails constantly.</li>
+</ul>
+
+<footer class="colophon">
+  <p><a href="index.html">&larr; Back to Dhruv Errla</a> &middot;
+  <a href="https://github.com/derrla4-beep/outreach-engine">Source on GitHub</a></p>
+</footer>
+
+</main>
+</div>
+</body>
+</html>

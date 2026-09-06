@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BankTracker &mdash; Dhruv Errla</title>
+<meta name="description" content="Forecasting investment banking recruiting timelines across 75 firms and 115 programs, driven by a scheduled agent over plain JSON with a schema validator in front of it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' font-family='Georgia,serif'>D</text></svg>">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="page page--wide">
+
+<header class="masthead" style="padding-bottom:1rem">
+  <a class="backlink" href="index.html">&larr; Dhruv Errla</a>
+  <h1 style="font-size:clamp(2rem,5.5vw,2.9rem)">BankTracker</h1>
+  <div class="rule"></div>
+  <p class="lede" style="max-width:36ch">Recruiting timelines are forecastable. The point of
+  forecasting them is to have the networking already done.</p>
+  <p class="project__meta" style="margin-top:1.5rem">
+    <span class="stack">Python &middot; JSON state &middot; Google Calendar &middot; scheduled agent</span>
+    <a href="https://github.com/derrla4-beep/BankTracker">github.com/derrla4-beep/BankTracker</a>
+  </p>
+</header>
+
+<main id="main" class="article">
+
+<h2>The insight</h2>
+
+<p>Banks post applications on a highly predictable annual rhythm. The same firm opens the
+same program within a fairly narrow window year after year, which means a database of
+historical open dates per firm-program produces a usable forecast of the next one.</p>
+
+<p>That forecast is only interesting because of what it is <em>for</em>. By the time an
+application goes live, the people who will do well have already spoken to someone at the
+firm. So the system does not alert on the posting. It alerts at <strong>T&minus;4 weeks and
+T&minus;1 week</strong>, when there is still time to have the conversations, and then again
+on the day so nothing is missed.</p>
+
+<div class="metrics">
+  <div><div class="metric__value">75</div><div class="metric__label">firms tracked, bulge bracket through middle market</div></div>
+  <div><div class="metric__value">115</div><div class="metric__label">firm-programs with their own timeline</div></div>
+  <div><div class="metric__value">3</div><div class="metric__label">tracks: banking, corporate finance, data science</div></div>
+  <div><div class="metric__value">44</div><div class="metric__label">commits, with a test suite</div></div>
+</div>
+
+<h2>The rule that makes it correct</h2>
+
+<p>This is the part of the project I would actually want to be asked about, because it is
+domain reasoning rather than code, and getting it wrong makes every other part of the system
+useless.</p>
+
+<div class="rulebox">
+  <p>A firm having a live Summer Analyst posting does not mean <em>my</em> program opened.
+  Liveness alone never justifies marking something open. The test is whether the
+  posting&rsquo;s own stated eligibility includes my graduating class.</p>
+</div>
+
+<p>Banks recruit roughly eighteen months ahead. In mid-2026 the postings going live are
+&ldquo;2027 Summer Analyst&rdquo; &mdash; which are for <strong>2028 graduates</strong>.
+For a 2029 grad those are a year early and not applicable, however live they look. The cycle
+that matters opens roughly a year after them. A naive tracker fires on every live posting and
+becomes noise within a week.</p>
+
+<p>But the same rule applied everywhere would be equally wrong in the other direction.
+Corporate finance and data science run six to twelve months ahead, not eighteen, so for those
+tracks a Summer 2027 posting <em>is</em> the sophomore-summer role and <em>is</em>
+applicable. Sophomores are genuinely hired into those, unlike banking where sophomore year is
+insight programs only. Applying the cycle-ahead rule to a non-banking posting would reject
+every posting actually available.</p>
+
+<div class="scroll">
+<table>
+  <thead><tr><th scope="col">Track</th><th scope="col">Lead time</th><th scope="col">Cycle-ahead rule</th><th scope="col">Method</th></tr></thead>
+  <tbody>
+    <tr><td>Investment banking</td><td>~18 months</td><td>Applies</td><td>Prediction from history</td></tr>
+    <tr><td>Corporate finance</td><td>6&ndash;12 months</td><td>Does not apply</td><td>Detection</td></tr>
+    <tr><td>Data science</td><td>6&ndash;12 months</td><td>Does not apply</td><td>Detection</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>There is a matching rule for how eligibility gets read. Banks name class years
+explicitly; corporate and tech postings usually do not. So the requirement is satisfied by
+any one of an explicit class-year list, a graduation-date window containing the target month,
+or a class-standing phrase like &ldquo;rising junior&rdquo; that maps to a graduation year
+&mdash; and whichever one is found gets quoted <em>verbatim</em> into the record. A posting
+that says nothing at all about eligibility is never promoted; it is filed as an open question
+for a human. <strong>Not classifiable is a state, not a default.</strong></p>
+
+<h2>Why there is no database</h2>
+
+<p>No app server, no ORM, no hosted anything. Four plain JSON files in the repository hold
+all state, read and updated by a scheduled agent that runs Monday, Wednesday and Friday
+around 8am Eastern.</p>
+
+<div class="scroll">
+<table>
+  <thead><tr><th scope="col">File</th><th scope="col">Holds</th></tr></thead>
+  <tbody>
+    <tr><td><code>data/firms.json</code></td><td>Firm identity, tier, careers URL, insight-program page</td></tr>
+    <tr><td><code>data/programs.json</code></td><td>One row per firm-program: type, historical open dates, predicted date, confidence, status</td></tr>
+    <tr><td><code>data/bu-events.json</code></td><td>Campus events relevant to recruiting, with source URLs</td></tr>
+    <tr><td><code>state/calendar-sync.json</code></td><td>Program and event id &rarr; the calendar event ids it created</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>At 115 rows a database would be pure overhead. What I get instead is that the entire state
+of the system is diffable and reviewable in git: I can see exactly what a run changed, and
+revert it, without a migration or an admin panel. The tradeoff is real and I would not make
+the same call at ten thousand rows &mdash; there is no concurrency story here and there does
+not need to be, because exactly one scheduled run touches these files at a time.</p>
+
+<h3>Idempotency is the whole reason the fourth file exists</h3>
+
+<p><code>state/calendar-sync.json</code> maps each program id to the calendar event ids
+already created for it. Without it, every run would happily create a second T&minus;4 alert,
+then a third. With it, a run that has seen a program before <em>updates</em> the event it
+already made. Re-running the agent is safe, which means a failed run can simply be run
+again &mdash; the property that makes a scheduled job something you can leave alone.</p>
+
+<h2>The validator</h2>
+
+<p>Every task in this project runs a validator before considering itself done. It checks all
+four state files against a written schema contract:</p>
+
+<ul>
+  <li><strong>Referential integrity</strong> &mdash; every program points at a firm id that
+  actually exists</li>
+  <li><strong>Enum values</strong> &mdash; tier is one of the tiers, type is one of the
+  types, status is one of the statuses</li>
+  <li><strong>Date formats</strong> &mdash; ISO, in a single declared timezone</li>
+  <li><strong>Id uniqueness</strong> across every file</li>
+</ul>
+
+<p>It exits 0 with a one-line summary or exits 1 and prints one message per problem. It has
+its own test suite, written against the standard library only so it runs anywhere with a
+Python install and no setup.</p>
+
+<p>That is a lot of ceremony for four JSON files, and it is the point. The agent writing
+those files is a language model, and a language model will occasionally produce a
+plausible-looking row pointing at a firm that does not exist. The validator is the boundary
+where that stops being possible. The same instinct shows up in
+<a href="outreach-engine.html">outreach-engine</a>, where post-generation checks are
+deterministic rather than another model call, and in the
+<a href="salt-creek.html">batch research pipeline</a>, where nothing enters the tracker
+unvalidated.</p>
+
+<h2>Honest limitations</h2>
+
+<ul>
+  <li><strong>A prediction is a prediction.</strong> Firms move their calendars. The
+  confidence field exists because some of these forecasts are built on two data points, and
+  a weekly sweep re-validates stale ones rather than trusting them indefinitely.</li>
+  <li><strong>Firm coverage was seeded narrowly on purpose</strong> for the non-banking
+  tracks, and is still expanding. Comprehensive coverage on day one was an explicit
+  non-goal.</li>
+  <li><strong>Detection depends on career pages staying readable.</strong> A site that
+  blocks automated reads leaves its program unverified, and unverified is recorded as
+  unverified rather than resolved by assumption.</li>
+</ul>
+
+<footer class="colophon">
+  <p><a href="index.html">&larr; Back to Dhruv Errla</a> &middot;
+  <a href="https://github.com/derrla4-beep/BankTracker">Source on GitHub</a></p>
+</footer>
+
+</main>
+</div>
+</body>
+</html>

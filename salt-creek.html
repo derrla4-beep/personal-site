@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Batch research pipeline &mdash; Dhruv Errla</title>
+<meta name="description" content="Sell-side target sourcing in water and wastewater infrastructure: 396 companies across 11 batches, with a research pipeline built so that nothing unproven can enter the tracker.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' font-family='Georgia,serif'>D</text></svg>">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="page page--wide">
+
+<header class="masthead" style="padding-bottom:1rem">
+  <a class="backlink" href="index.html">&larr; Dhruv Errla</a>
+  <h1 style="font-size:clamp(2rem,5.5vw,2.9rem)">Batch research pipeline</h1>
+  <div class="rule"></div>
+  <p class="lede" style="max-width:38ch">Sell-side target sourcing in water and wastewater.
+  396 companies across 11 batches, and a system built so that nothing unproven can enter the
+  tracker.</p>
+  <p class="project__meta" style="margin-top:1.5rem">
+    <span class="stack">Python &middot; Claude Code &middot; openpyxl &middot; schema validation</span>
+    <span>Salt Creek Advisory &middot; client work, no public repository</span>
+  </p>
+</header>
+
+<main id="main" class="article">
+
+<h2>The mandate</h2>
+
+<p>Salt Creek Advisory is a lower-middle-market sell-side M&amp;A firm. My job is sourcing
+acquisition targets in <strong>water and wastewater infrastructure</strong>: batches of
+companies arrive, each one gets researched, and each one gets a decision &mdash; reach out,
+do not reach out, or needs review with the exact remaining checks named.</p>
+
+<p>The output is a row in a master tracker: what the company does, who owns it, whether the
+ownership structure is the kind the firm can transact with, and the contact an associate can
+actually pick up the phone to.</p>
+
+<div class="metrics">
+  <div><div class="metric__value">396</div><div class="metric__label">companies researched and decided</div></div>
+  <div><div class="metric__value">11</div><div class="metric__label">batches, growing from 25 to 75 companies</div></div>
+  <div><div class="metric__value">3&nbsp;min</div><div class="metric__label">research budget per company</div></div>
+  <div><div class="metric__value">100%</div><div class="metric__label">of rows verified by hand before delivery</div></div>
+</div>
+
+<h2>The rule everything else is built around</h2>
+
+<div class="rulebox">
+  <p>Never fabricate anything. Unknown is written as <em>Not Found</em> plus the exact manual
+  check still owed &mdash; never as a plausible guess.</p>
+</div>
+
+<p>Every claim in a row needs a source URL that actually proves that specific claim. A page
+that returns 403 or times out leaves its claim <strong>unverified, not confirmed</strong>.
+Those two words look similar in a spreadsheet and mean opposite things.</p>
+
+<p>The reason this is the first rule rather than a nice-to-have is the failure mode it
+prevents. An invented owner name or a wrong email does not fail quietly &mdash; it fails in
+front of the person it is wrong about. <em>The recipient knows their own company.</em> One
+fabricated fact in an outreach email costs the firm the conversation and some of its
+credibility, and no amount of throughput is worth that.</p>
+
+<p>I arrived at the same rule independently when building
+<a href="outreach-engine.html">outreach-engine</a>, where it shows up as a lint that aborts
+the send rather than emitting an unverifiable claim. Same failure mode, same defense, two
+different domains.</p>
+
+<h2>What actually makes this sector hard</h2>
+
+<p>Water and wastewater is not a list you can filter. The single largest source of false
+positives is that <strong>government entities look exactly like operating companies</strong>
+in a raw list &mdash; municipal utility districts, water control and improvement districts,
+public service districts, water authorities, sanitation districts, city utility departments.
+They are the dominant rejection in this sector and they are usually identifiable from the
+name once you know what you are looking at, which is precisely the knowledge a generic
+screen does not have.</p>
+
+<p>The sector also splits three ways, and which segment a company sits in changes who the
+owner is likely to be &mdash; which changes how hard you have to look before believing the
+ownership answer:</p>
+
+<div class="scroll">
+<table>
+  <thead><tr><th scope="col">Segment</th><th scope="col">What they do</th><th scope="col">Typical ownership</th><th scope="col">Implication</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>Contract operators / O&amp;M</td>
+      <td>Run treatment plants under contract to municipalities</td>
+      <td>Founder or family owned</td>
+      <td>The best targets</td>
+    </tr>
+    <tr>
+      <td>Heavy civil / underground</td>
+      <td>Build and rehabilitate plants, pipes and mains</td>
+      <td>Often second or third generation family</td>
+      <td>Strong, but check for prior roll-up</td>
+    </tr>
+    <tr>
+      <td>Engineering consultancies</td>
+      <td>Design the systems</td>
+      <td>Frequently employee-owned or already acquired</td>
+      <td>Checked hardest &mdash; highest rate of quiet disqualification</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>On top of that sit the hard exclusions: private-equity backed, public company or
+subsidiary, franchise, already acquired, out of sector, real estate, government, nonprofit,
+closed, a branch of a larger corporation, or clearly outside the lower middle market.</p>
+
+<p>The counterweight matters as much as the exclusions. <strong>Lean toward reaching
+out.</strong> Independent, active and in sector means yes unless a hard exclusion applies.
+Never reject a company for looking small &mdash; small and independent is the thesis, not a
+disqualifier. A screen tuned only to reject is as useless as one that never does.</p>
+
+<h2>How the pipeline runs</h2>
+
+<ol class="article" style="padding-left:1.15rem;max-width:68ch">
+  <li style="margin-bottom:.55em">A batch arrives as a pasted list or a workbook and is
+  saved as a raw input file, untouched, so the original is always recoverable.</li>
+  <li style="margin-bottom:.55em">Research <strong>fans out across parallel agents</strong>,
+  five companies each, on a fixed three-minute-per-company budget. The budget is a real
+  constraint, not a target: it forces the decision to be made on the checks that actually
+  move it rather than on exhaustive reading.</li>
+  <li style="margin-bottom:.55em">Each company gets one of three decisions &mdash; yes, no,
+  or needs review <em>with the outstanding checks named explicitly</em>. &ldquo;Needs
+  review&rdquo; without a list of what is missing is not a decision, it is a shrug.</li>
+  <li style="margin-bottom:.55em">Rows are written to a structured JSON file and run through
+  a schema validator before they can go anywhere.</li>
+  <li>Validated rows are appended to the master tracker and delivered either as a standalone
+  workbook or as a research tab added alongside the raw source tab.</li>
+</ol>
+
+<p>The validator sits between research and delivery for the same reason the one in
+<a href="banktracker.html">BankTracker</a> does: the thing producing the rows is capable of
+producing a well-formed row that is wrong. Schema conformance is not correctness, but it is
+the floor, and it is the last place a machine can catch anything before a human has to.</p>
+
+<h3>The pipeline produces drafts, not finished work</h3>
+
+<p>Rows land at <em>Ready for Review</em> and <em>Not Reviewed</em>. Every row is then
+verified by me, by hand, and an associate reviews after that. That sequence is the
+deliverable &mdash; automation moves the work to the point where judgment is required and
+then stops.</p>
+
+<p>Claiming otherwise would be both wrong and obviously wrong to anyone who has done this
+job. The pipeline is why I can look at 40 companies in a day instead of 10. It is not why the
+answers are right.</p>
+
+<h2>What I would change</h2>
+
+<ul>
+  <li><strong>Rejection reasons are not yet analyzed in aggregate.</strong> I know
+  government entities dominate; I do not have a clean distribution across the other
+  exclusions, and that distribution would tell the firm something about where its list
+  sourcing is weak.</li>
+  <li><strong>Ownership verification is still the slowest step</strong> and the one most
+  likely to end in <em>Not Found</em>. Better source-of-record ordering &mdash; knowing which
+  registry to check first for a given state &mdash; would recover real time.</li>
+  <li><strong>One exclusion is a local ruling rather than a firm rule.</strong> Confirmed
+  employee-ownership is currently excluded here; I escalated the question rather than
+  deciding it quietly, and it is still pending. Writing down which rules are yours and which
+  are the client&rsquo;s matters when someone else picks up the work.</li>
+</ul>
+
+<p class="note" style="margin-top:2rem">No company names, rows, or client materials appear
+on this page or anywhere on this site. This is a description of method.</p>
+
+<footer class="colophon">
+  <p><a href="index.html">&larr; Back to Dhruv Errla</a></p>
+</footer>
+
+</main>
+</div>
+</body>
+</html>

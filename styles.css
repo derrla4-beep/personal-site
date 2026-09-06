@@ -1,0 +1,439 @@
+/* ============================================================
+   Design tokens. Everything below reads from these.
+   Light palette on bare :root; dark redefines tokens only.
+   ============================================================ */
+
+:root {
+  --ground:        #FBFAF8;
+  --ground-inset:  #F4F2ED;
+  --ink:           #1A1815;
+  --ink-soft:      #46423C;
+  --muted:         #7C766C;
+  --accent:        #1F4A5C;
+  --accent-quiet:  #4A7A8C;
+  --rule:          rgba(26, 24, 21, 0.12);
+  --rule-strong:   rgba(26, 24, 21, 0.28);
+
+  --serif: "Source Serif 4", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --sans:  -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto,
+           "Helvetica Neue", Arial, sans-serif;
+  --mono:  ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+           "Liberation Mono", monospace;
+
+  --measure: 68ch;
+  --page:    46rem;
+  --gutter:  clamp(1.25rem, 5vw, 2.5rem);
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ground:        #15171A;
+    --ground-inset:  #1D2025;
+    --ink:           #E9E7E2;
+    --ink-soft:      #BDB9B1;
+    --muted:         #8B8981;
+    --accent:        #7FB3C4;
+    --accent-quiet:  #5D8C9C;
+    --rule:          rgba(233, 231, 226, 0.14);
+    --rule-strong:   rgba(233, 231, 226, 0.30);
+
+    color-scheme: dark;
+  }
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  font-feature-settings: "kern" 1;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 600;
+  line-height: 1.18;
+  letter-spacing: -0.011em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+p { margin: 0 0 1.15em; max-width: var(--measure); }
+p:last-child { margin-bottom: 0; }
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent-quiet);
+  transition: color .15s ease, border-color .15s ease;
+}
+a:hover { color: var(--ink); border-bottom-color: var(--ink); }
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+strong { font-weight: 640; color: var(--ink); }
+em { font-style: italic; }
+code {
+  font-family: var(--mono);
+  font-size: 0.86em;
+  background: var(--ground-inset);
+  padding: 0.12em 0.34em;
+  border-radius: 2px;
+}
+hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 0;
+}
+
+.skip {
+  position: absolute; left: -9999px;
+  background: var(--ground); color: var(--ink);
+  padding: .6rem 1rem; z-index: 10;
+}
+.skip:focus { left: var(--gutter); top: .75rem; }
+
+/* ============================================================
+   Layout
+   ============================================================ */
+
+.page {
+  max-width: var(--page);
+  margin: 0 auto;
+  padding: 0 var(--gutter) 5rem;
+}
+.page--wide { max-width: 54rem; }
+
+section { padding: 2.75rem 0; border-top: 1px solid var(--rule); }
+section:first-of-type { border-top: 0; }
+
+/* Section label - small caps marker in the accent */
+.label {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 620;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 1.4rem;
+}
+
+.lede {
+  font-family: var(--serif);
+  font-size: clamp(1.15rem, 2.4vw, 1.34rem);
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.note {
+  font-size: 0.9rem;
+  color: var(--muted);
+  max-width: var(--measure);
+}
+
+/* ============================================================
+   Masthead
+   ============================================================ */
+
+.masthead { padding: clamp(3.5rem, 9vw, 6rem) 0 2.75rem; }
+
+.masthead h1 {
+  font-size: clamp(2.4rem, 7vw, 3.6rem);
+  letter-spacing: -0.024em;
+  margin-bottom: 1.1rem;
+}
+
+.masthead .rule {
+  width: 3.25rem;
+  height: 2px;
+  background: var(--accent);
+  margin-bottom: 1.4rem;
+}
+
+.masthead .tagline {
+  font-family: var(--serif);
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
+  line-height: 1.4;
+  color: var(--ink);
+  max-width: 30ch;
+  margin-bottom: 1rem;
+}
+
+.masthead .affil {
+  color: var(--muted);
+  font-size: 0.98rem;
+  margin-bottom: 2rem;
+}
+
+/* ============================================================
+   Nav
+   ============================================================ */
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.5rem;
+  font-size: 0.94rem;
+}
+.nav a {
+  border-bottom: 1px solid transparent;
+  color: var(--ink-soft);
+}
+.nav a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* Back link on sub-pages */
+.backlink {
+  display: inline-block;
+  font-size: 0.88rem;
+  color: var(--muted);
+  border-bottom: 0;
+  margin-bottom: 2.5rem;
+}
+.backlink:hover { color: var(--accent); border-bottom: 0; }
+
+/* ============================================================
+   Entries (experience, leadership, education)
+   ============================================================ */
+
+.entry { padding: 1.6rem 0; border-top: 1px solid var(--rule); }
+.entry:first-of-type { border-top: 0; padding-top: 0; }
+
+.entry__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  margin-bottom: 0.15rem;
+}
+.entry__org { font-size: 1.22rem; }
+.entry__date {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.entry__role {
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  font-weight: 560;
+  margin-bottom: 0.7rem;
+}
+.entry__body { font-size: 1rem; color: var(--ink-soft); }
+.entry__body strong { color: var(--ink); }
+
+/* ============================================================
+   Project list
+   ============================================================ */
+
+.project { padding: 1.75rem 0; border-top: 1px solid var(--rule); }
+.project:first-of-type { border-top: 0; padding-top: 0; }
+
+.project__title { font-size: 1.3rem; margin-bottom: 0.5rem; }
+.project__title a { border-bottom: 0; }
+.project__title a:hover { border-bottom: 0; color: var(--accent); }
+
+.project__thesis {
+  font-size: 1rem;
+  color: var(--ink-soft);
+  margin-bottom: 0.85rem;
+}
+
+.project__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 1.15rem;
+  font-size: 0.84rem;
+  color: var(--muted);
+}
+.stack { font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.01em; }
+
+/* ============================================================
+   Sub-page article body
+   ============================================================ */
+
+.article h2 {
+  font-size: clamp(1.4rem, 3.4vw, 1.7rem);
+  margin: 2.75rem 0 0.9rem;
+  padding-top: 2.25rem;
+  border-top: 1px solid var(--rule);
+}
+.article h2:first-of-type { border-top: 0; padding-top: 0; margin-top: 2rem; }
+
+.article h3 {
+  font-size: 1.1rem;
+  margin: 1.9rem 0 0.5rem;
+  color: var(--ink);
+}
+
+.article ul { padding-left: 1.15rem; margin: 0 0 1.15em; max-width: var(--measure); }
+.article li { margin-bottom: 0.55em; }
+.article li::marker { color: var(--accent-quiet); }
+
+/* A decision block: the claim, then what it cost */
+.decision { padding: 1.4rem 0; border-top: 1px solid var(--rule); }
+.decision:first-of-type { border-top: 0; }
+.decision h3 { margin-top: 0; font-family: var(--serif); font-size: 1.12rem; }
+.cost {
+  font-size: 0.92rem;
+  color: var(--muted);
+  border-left: 2px solid var(--rule-strong);
+  padding-left: 0.9rem;
+  margin-top: 0.9rem;
+  max-width: var(--measure);
+}
+.cost strong { color: var(--ink-soft); font-weight: 620; }
+
+/* Pull quote - one rule that governs a system */
+.rulebox {
+  border-left: 2px solid var(--accent);
+  padding: 0.15rem 0 0.15rem 1.15rem;
+  margin: 1.5rem 0;
+  max-width: var(--measure);
+}
+.rulebox p {
+  font-family: var(--serif);
+  font-size: 1.12rem;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+/* ============================================================
+   Metrics
+   ============================================================ */
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr));
+  gap: 1.5rem 1.25rem;
+  margin: 1.75rem 0;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.metric__value {
+  font-family: var(--serif);
+  font-size: 1.85rem;
+  line-height: 1;
+  color: var(--ink);
+  margin-bottom: 0.4rem;
+}
+.metric__label {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+/* ============================================================
+   Tables and scroll containers
+   ============================================================ */
+
+.scroll { overflow-x: auto; margin: 1.5rem 0; -webkit-overflow-scrolling: touch; }
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 26rem;
+  font-size: 0.93rem;
+}
+th, td {
+  text-align: left;
+  padding: 0.6rem 1rem 0.6rem 0;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+th {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 620;
+  border-bottom-color: var(--rule-strong);
+}
+td:last-child, th:last-child { padding-right: 0; }
+
+/* ============================================================
+   Diagram
+   ============================================================ */
+
+.diagram { margin: 1.75rem 0; }
+.diagram svg { display: block; width: 100%; height: auto; min-width: 30rem; }
+.diagram figcaption {
+  font-size: 0.84rem;
+  color: var(--muted);
+  margin-top: 0.85rem;
+  max-width: var(--measure);
+}
+.d-box  { fill: var(--ground-inset); stroke: var(--rule-strong); stroke-width: 1; }
+.d-lane { fill: none; stroke: var(--rule); stroke-width: 1; stroke-dasharray: 3 3; }
+.d-title{ fill: var(--ink); font-family: var(--sans); font-size: 12.5px; font-weight: 600; }
+.d-sub  { fill: var(--muted); font-family: var(--mono); font-size: 10.5px; }
+.d-lane-label {
+  fill: var(--accent); font-family: var(--sans); font-size: 9.5px;
+  font-weight: 620; letter-spacing: 0.12em;
+}
+.d-line { stroke: var(--rule-strong); stroke-width: 1.25; fill: none; }
+.d-line--soft { stroke: var(--rule-strong); stroke-width: 1.25; fill: none; stroke-dasharray: 4 3; }
+.d-head { fill: var(--rule-strong); }
+.d-store{ fill: none; stroke: var(--accent-quiet); stroke-width: 1.25; }
+.d-store-label { fill: var(--accent); font-family: var(--mono); font-size: 10px; }
+
+/* ============================================================
+   Contact
+   ============================================================ */
+
+.contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.7rem;
+  font-size: 1.02rem;
+}
+
+.colophon {
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.84rem;
+  color: var(--muted);
+}
+
+/* ============================================================
+   Narrow screens
+   ============================================================ */
+
+@media (max-width: 46rem) {
+  body { font-size: 1rem; }
+  .entry__head { flex-direction: column; }
+  .entry__date { order: -1; }
+  .metrics { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+@media print {
+  body { background: #fff; color: #000; }
+  .nav, .backlink { display: none; }
+  a { color: #000; border-bottom: 0; }
+}
