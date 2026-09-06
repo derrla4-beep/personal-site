@@ -47,3 +47,15 @@ Push to `main`. GitHub Pages redeploys automatically; it usually takes under a m
 - No Salt Creek company names, batch data, tracker rows, or screenshots.
 - Never link the private `Banking-Outreach` repository. `outreach-engine` is its sanitized
   public twin and is the one to show.
+
+## Turning on the custom domain
+
+The site is live at <https://derrla4-beep.github.io/personal-site/> until `dhruverrla.me`
+is registered and its DNS points at GitHub. Once it does, run:
+
+```bash
+mv CNAME.pending CNAME && git add CNAME && git commit -m "chore: point at dhruverrla.me" && git push
+```
+
+Then in Settings → Pages, set the custom domain to `dhruverrla.me` and tick **Enforce HTTPS**
+once the certificate provisions.
